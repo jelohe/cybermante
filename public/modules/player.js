@@ -60,6 +60,8 @@ function openBox(state) {
     state.console.writeLine("Basura")
   } else if (hasAnanas) {
     state.console.writeLine("Encuentras una pistola!")
+    state.console.writeLine("Aqui vendria el combate, pero programar es dificil")
+    state.console.writeLine("Continuara...")
 
     window.removeEventListener("keydown", player)
     engine.lock()
