@@ -65,7 +65,7 @@ export default function createEnemy(state) {
     const isNextToPlayer = path.length <= 1
 
     if (isNextToPlayer) {
-      state.console.writeLine("Pedro has captured you!")
+      state.console.writeLine("Te han capturado! :(")
       engine.lock()
     } else {
       const prevX = pedro.x

@@ -1,15 +1,13 @@
 import render from './render.js'
 
 export default function createPlayer(state) {
-  let movementKeys = []
-  const [up, right, down, left] = [0, 1, 2, 3]
-  const [k, l, j, h] = [75, 76, 74, 72]
-  const space = 32
-
-  movementKeys[k] = up
-  movementKeys[l] = right
-  movementKeys[j] = down
-  movementKeys[h] = left
+  let movementKeys = [
+    'ArrowUp',
+    'ArrowRight',
+    'ArrowDown',
+    'ArrowLeft',
+  ]
+  const actionKey = ' '
 
   const { characters: { player }, engine } = state
 
@@ -18,19 +16,22 @@ export default function createPlayer(state) {
     window.addEventListener("keydown", player)
   }
 
-  player.handleEvent = ({ keyCode }) => {
-    if (movementKeys[keyCode] !== undefined)
-      move(state, movementKeys, keyCode)
-    else if (keyCode == space) 
+  player.handleEvent = (e) => {
+    if (!e) return
+    const { key } = e
+    if (movementKeys.indexOf(key) !== -1)
+      move(state, movementKeys, key)
+    else if (key === actionKey) 
       openBox(state)
   }
 
   return player
 }
 
-function move(state, movementKeys, keyCode) {
+function move(state, movementKeys, key) {
   const { characters: { player }, map, engine } = state
-  const diff = ROT.DIRS[4][movementKeys[keyCode]]
+  const playerDir = movementKeys.indexOf(key)
+  const diff = ROT.DIRS[4][playerDir]
   const newX = player.x + diff[0]
   const newY = player.y + diff[1]
   const isInMap = ({x, y}) => x == newX && y == newY
@@ -54,11 +55,11 @@ function openBox(state) {
   )
 
   if (hasAnanas === undefined)
-    state.console.writeLine("Nothing interesting.")
+    state.console.writeLine("Nada interesante.")
   else if (!hasAnanas) {
-    state.console.writeLine("That's just trash.")
+    state.console.writeLine("Basura")
   } else if (hasAnanas) {
-    state.console.writeLine("It's your smartphone, it appears to be charged.")
+    state.console.writeLine("Encuentras una pistola!")
 
     window.removeEventListener("keydown", player)
     engine.lock()
